@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #4a90e2;
+  --color-background-light: #f8f9fa;
+  --color-background-dark: #101922;
+  --color-light: #333333;
+  --color-dark: #e5e7eb;
+  --color-secondary-light: #9b9b9b;
+  --color-secondary-dark: #9dabb9;
+  --color-border-light: #e5e7eb;
+  --color-border-dark: #3b4754;
+  --color-card-light: #ffffff;
+  --color-card-dark: #1c2127;
+  --color-success: #7ed321;
+  --color-error: #d0021b;
+
+  --label-light: #555555;
+  --label-dark: #9dabb9;
+  --border-light: #cccccc;
+  --border-dark: #3b4754;
+  --input-bg-light: #ffffff;
+  --input-bg-dark: #1c2127;
+
+  /* Font family */
+  --font-display: "Inter", sans-serif;
+
+  /* Border radius */
+  --radius: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  /* Animations */
+  --animate-fadeIn: fadeIn 0.3s ease-out;
+  --animate-scaleIn: scaleIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
