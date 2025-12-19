@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { useTheme } from "../../hooks/useTheme";
-import TaskyIcon from "../../assets/tasky-icon.webp";
-import TaskyIconDark from "../../assets/tasky-icon-dark.webp";
+import { TaskyIcon } from "../../components/Icons/TaskyIcon";
 
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
-  const { theme } = useTheme();
 
   const togglePassword = () => setShowPassword((prev) => !prev);
 
@@ -14,13 +11,10 @@ export function Login() {
     <div className="min-h-screen w-full flex flex-col items-center justify-center pt-20 px-4">
       <div className="flex h-full grow flex-col w-full max-w-md">
         <div className="flex flex-col items-center justify-center w-full">
-          <div className="flex items-center justify-center mb-6">
-            <img
-              src={theme === "light" ? TaskyIcon : TaskyIconDark}
-              alt="Tasky: Simple tasks, powerful flow"
-              className="w-5/6 md:w-4/5"
-            />
-          </div>
+          <TaskyIcon
+            className="mb-6 justify-center"
+            imageClassName="w-5/6 md:w-4/5"
+          />
 
           <div className="w-full bg-white dark:bg-[#1a2530] rounded-xl shadow-lg p-6 md:p-8">
             <h1 className="text-slate-900 dark:text-white tracking-light text-2xl md:text-3xl font-bold leading-tight text-center">
