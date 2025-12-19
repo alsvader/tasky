@@ -8,7 +8,7 @@ function App() {
   return (
     <ThemeProvider>
       <RootLayout>
-        <Dashboard />
+        <Signup />
       </RootLayout>
     </ThemeProvider>
   );

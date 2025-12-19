@@ -1,44 +1,22 @@
+import { TaskyIcon } from "../../components/Icons/TaskyIcon";
+
 export function Signup() {
   return (
-    <div className="relative flex min-h-screen w-full flex-col">
+    <div className="relative flex lg:min-h-screen w-full flex-col">
       <div className="layout-container flex h-full grow flex-col">
-        <header className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between whitespace-nowrap p-6 lg:px-10 lg:py-5">
-          <div className="flex items-center gap-4 text-text-light dark:text-text-dark">
-            <div className="size-6 text-primary">
-              <svg
-                fill="none"
-                viewBox="0 0 48 48"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  clipRule="evenodd"
-                  d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z"
-                  fill="currentColor"
-                  fillRule="evenodd"
-                ></path>
-              </svg>
-            </div>
-            <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">
-              ProductivityApp
-            </h2>
-          </div>
-        </header>
         <main className="flex flex-1">
           <div className="grid w-full grid-cols-1 lg:grid-cols-2">
             <div className="relative hidden h-full items-center justify-center bg-gray-100 dark:bg-black/20 lg:flex">
               <div className="w-full max-w-md p-8">
-                <div
-                  className="aspect-square w-full rounded-xl bg-cover bg-center bg-no-repeat"
-                  data-alt="Abstract illustration of geometric shapes and lines in shades of blue and gray, representing productivity and organization."
-                  style={{
-                    backgroundImage:
-                      'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBmMgjSD0y5jVscqxL0rljzM8IC5tYfSiobGznwS5dCOgCdqFGoVPv0TLxdqqbgVVtU0YS_44D9kj2R7-rU76Ogr1VY9OJtN55txMWRxks7YFhoGNnmF9tQZOqa6YLKGt4at45Tdv-aNa575Rjhq9XbPstB_q2Pc2H9XR6Ao2Eiv_sE7oOumQOYb5EkGAW2ucM_wWiHTvOWoH9hqyRbxxYfRWgx2cZ80sNBi6QgB_4PxEw5bQvirZXYOzPDmOokMo7Nv_EZZMscL_JG")',
-                  }}
-                ></div>
+                <TaskyIcon imageClassName="w-full h-full md:w-full" />
               </div>
             </div>
-            <div className="flex min-h-full w-full items-center justify-center bg-background-light dark:bg-background-dark px-4 py-20 sm:px-6 lg:px-8">
+            <div className="flex w-full items-center justify-center bg-background-light dark:bg-background-dark px-4 pt-10 pb-20 sm:px-6 lg:px-8">
               <div className="w-full max-w-md space-y-8">
+                <TaskyIcon
+                  className="lg:hidden justify-center"
+                  imageClassName="w-3/4 md:w-2/3"
+                />
                 <div>
                   <div className="flex flex-col gap-2">
                     <h1 className="text-3xl font-black leading-tight tracking-[-0.033em] text-text-light dark:text-text-dark sm:text-4xl">
