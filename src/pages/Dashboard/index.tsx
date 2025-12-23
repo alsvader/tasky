@@ -1,17 +1,22 @@
 import { TaskForm } from "@/components/TaskForm";
 import { ProfileEditForm } from "@/components/ProfileEditForm";
 import { TaskList } from "@/components/TaskList";
+import { type TaskFormInputs } from "@/components/types";
 import { DUMMY_DATA } from "./dummy-data";
 
 export function Dashboard() {
   const completed = DUMMY_DATA.filter((task) => task.completed);
   const active = DUMMY_DATA.filter((task) => !task.completed);
 
-  const onToggle = (id: string) => {
+  const onAddTask = (task: TaskFormInputs) => {
+    console.log("Add task:", task);
+  };
+
+  const onToggleTask = (id: string) => {
     console.log("Toggle task with id:", id);
   };
 
-  const onDelete = (id: string) => {
+  const onDeleteTask = (id: string) => {
     console.log("Delete task with id:", id);
   };
 
@@ -29,23 +34,22 @@ export function Dashboard() {
           </div>
         </div>
 
-        <TaskForm />
+        <TaskForm onAddTask={onAddTask} />
 
         <div className="flex flex-col">
           {/* Active Tasks */}
           <TaskList
             title="Active"
             tasks={active}
-            onToggle={onToggle}
-            onDelete={onDelete}
+            onToggle={onToggleTask}
+            onDelete={onDeleteTask}
           />
 
           {/* Completed Tasks */}
           <TaskList
             title="Completed"
             tasks={completed}
-            onToggle={onToggle}
-            onDelete={onDelete}
+            onToggle={onToggleTask}
             emptyTitle="No completed tasks yet"
             emptySubTitle="Start with your first task and check it off when you're done."
           />
