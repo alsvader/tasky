@@ -1,5 +1,6 @@
 import { EmptyTasks } from "../../components/EmptyTasks";
 import { TaskForm } from "../../components/TaskForm";
+import { ProfileEditForm } from "../../components/ProfileEditForm";
 
 export function Dashboard() {
   return (
@@ -123,6 +124,7 @@ export function Dashboard() {
           </details>
         </div>
       </div>
+      <ProfileEditForm />
     </section>
   );
 }

@@ -13,7 +13,7 @@ export function RootLayout({ children }: PropsWithChildren) {
         theme
       )}
     >
-      {/* <Header /> */}
+      <Header />
       {children}
     </main>
   );

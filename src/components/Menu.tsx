@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
+import { useSettingsModal } from "../hooks/useSettingsModal";
 import { cn } from "../utils/cn";
 
 export function Menu() {
   const [isOpen, setIsOpen] = useState(false);
+  const { onOpen } = useSettingsModal();
 
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -27,6 +29,7 @@ export function Menu() {
   const onSettings = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.currentTarget.blur();
     toggleMenu();
+    onOpen();
   };
 
   return (
