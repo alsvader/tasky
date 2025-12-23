@@ -1,6 +1,6 @@
 import { useEffect, type PropsWithChildren } from "react";
-import { useSettingsModal } from "../hooks/useSettingsModal";
-import { cn } from "../utils/cn";
+import { useSettingsModal } from "@/hooks/useSettingsModal";
+import { cn } from "@/utils/cn";
 
 export interface ModalProps
   extends PropsWithChildren,

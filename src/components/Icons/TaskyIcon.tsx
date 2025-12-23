@@ -1,7 +1,7 @@
-import { useTheme } from "../../hooks/useTheme";
-import TaskyIconLight from "../../assets/tasky-icon.webp";
-import TaskyIconDark from "../../assets/tasky-icon-dark.webp";
-import { cn } from "../../utils/cn";
+import { useTheme } from "@/hooks/useTheme";
+import TaskyIconLight from "@/assets/tasky-icon.webp";
+import TaskyIconDark from "@/assets/tasky-icon-dark.webp";
+import { cn } from "@/utils/cn";
 
 interface TaskyIconProps {
   className?: string;

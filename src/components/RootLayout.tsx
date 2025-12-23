@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
-import { Header } from "./components/Header";
-import { useTheme } from "./hooks/useTheme";
-import { cn } from "./utils/cn";
+import { Header } from "@/components/Header";
+import { useTheme } from "@/hooks/useTheme";
+import { cn } from "@/utils/cn";
 
 export function RootLayout({ children }: PropsWithChildren) {
   const { theme } = useTheme();

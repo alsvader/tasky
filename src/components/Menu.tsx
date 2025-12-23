@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { useSettingsModal } from "../hooks/useSettingsModal";
-import { cn } from "../utils/cn";
+import { useSettingsModal } from "@/hooks/useSettingsModal";
+import { cn } from "@/utils/cn";
 
 export function Menu() {
   const [isOpen, setIsOpen] = useState(false);

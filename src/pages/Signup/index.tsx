@@ -1,4 +1,4 @@
-import { TaskyIcon } from "../../components/Icons/TaskyIcon";
+import { TaskyIcon } from "@/components/Icons/TaskyIcon";
 
 export function Signup() {
   return (

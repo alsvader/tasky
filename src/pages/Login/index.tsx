@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TaskyIcon } from "../../components/Icons/TaskyIcon";
+import { TaskyIcon } from "@/components/Icons/TaskyIcon";
 
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);

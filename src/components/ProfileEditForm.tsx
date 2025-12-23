@@ -1,5 +1,5 @@
-import { useSettingsModal } from "../hooks/useSettingsModal";
-import { Modal } from "./Modal";
+import { useSettingsModal } from "@/hooks/useSettingsModal";
+import { Modal } from "@/components/Modal";
 
 export function ProfileEditForm() {
   const { isSettingsOpen, onClose } = useSettingsModal();

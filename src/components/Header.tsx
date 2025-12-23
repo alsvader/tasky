@@ -1,6 +1,6 @@
-import { Menu } from "./Menu";
-import { ToggleThemeButton } from "./ToggleThemeButton";
-import { TaskyIcon } from "./Icons/TaskyIcon";
+import { Menu } from "@/components/Menu";
+import { ToggleThemeButton } from "@/components/ToggleThemeButton";
+import { TaskyIcon } from "@/components/Icons/TaskyIcon";
 
 export function Header() {
   return (

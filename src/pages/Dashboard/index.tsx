@@ -1,6 +1,6 @@
-import { EmptyTasks } from "../../components/EmptyTasks";
-import { TaskForm } from "../../components/TaskForm";
-import { ProfileEditForm } from "../../components/ProfileEditForm";
+import { EmptyTasks } from "@/components/EmptyTasks";
+import { TaskForm } from "@/components/TaskForm";
+import { ProfileEditForm } from "@/components/ProfileEditForm";
 
 export function Dashboard() {
   return (
