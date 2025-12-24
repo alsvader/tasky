@@ -1,11 +1,16 @@
+import { useState, useRef } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSettingsModal } from "@/hooks/useSettingsModal";
 import { Modal } from "@/components/Modal";
 import { type ProfileFormInputs, ProfileFormSchema } from "@/components/types";
 
+import UserIcon from "@/assets/user.png";
+
 export function ProfileEditForm() {
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const { isSettingsOpen, onClose } = useSettingsModal();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -17,6 +22,27 @@ export function ProfileEditForm() {
 
   const onSubmit: SubmitHandler<ProfileFormInputs> = (data) => {
     console.log("Update profile:", data);
+  };
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      console.log("Selected file:", file);
+      const url = URL.createObjectURL(file);
+      setImagePreview(url);
+      // Handle file upload here
+    }
+  };
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const cancelImageSelection = () => {
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   return (
@@ -38,30 +64,46 @@ export function ProfileEditForm() {
           </h4>
           <div className="flex items-center gap-6">
             <div className="relative group">
-              <div
-                className="size-20 rounded-full bg-cover bg-center ring-4 ring-background-light dark:ring-background-dark shadow-md"
-                style={{
-                  background:
-                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBZSzl3OZfsXHm3OY53hm0kPVXGvqSHj6VYgx7chdDXVByilViVX06zipLvCVXbCLKwliIeEAXhF_94bqE0yI7JuIqhvNUqrUXv256T0j3fGqDv36k-iiJoCDCaqdg6bjf6qE3uEwoVFOyetfnAGO2Z667KucQec2L0W49x-8Pu1esXwRrNtI_6Zlulv5AB3RAS3gZcvrT0nnNlI7IsXVN3iVa72bK_N5yeeojAd_jrTuYQePsFnSH0uIts0dlLmJaKI4nh7NI1Srjo")',
-                }}
-              ></div>
-              <button className="absolute bottom-0 right-0 flex items-center justify-center rounded-full bg-primary text-white size-7 ring-2 ring-card-light dark:ring-card-dark hover:bg-primary/90 transition-colors shadow-sm hover:cursor-pointer">
+              <div className="size-20 rounded-full bg-cover bg-center ring-4 ring-background-light dark:ring-background-dark shadow-md">
+                <img
+                  src={imagePreview || UserIcon}
+                  alt="Profile Picture"
+                  className="w-full h-full rounded-full object-cover object-center"
+                />
+              </div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileSelect}
+                accept="image/*"
+                className="hidden"
+              />
+              <button
+                type="button"
+                onClick={handleButtonClick}
+                className="absolute bottom-0 right-0 flex items-center justify-center rounded-full bg-primary text-white size-7 ring-2 ring-card-light dark:ring-card-dark hover:bg-primary/90 transition-colors shadow-sm hover:cursor-pointer"
+              >
                 <span className="material-symbols-outlined text-xs">edit</span>
               </button>
             </div>
             <div className="flex flex-1 flex-col justify-center gap-3">
-              <div className="flex flex-col items-center gap-3 min-[425px]:flex-row">
-                <button className="px-4 py-2 text-sm font-medium text-light dark:text-dark bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-lg hover:bg-background-light dark:hover:bg-background-dark transition-colors shadow-sm hover:cursor-pointer">
-                  Upload
-                </button>
-                <button className="px-4 py-2 text-sm font-medium text-red-500 bg-transparent border border-transparent rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors hover:cursor-pointer">
-                  Cancel
-                </button>
-              </div>
+              {imagePreview && (
+                <div className="flex flex-col items-center gap-3 min-[425px]:flex-row">
+                  <button className="px-4 py-2 text-sm font-medium text-light dark:text-dark bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-lg hover:bg-background-light dark:hover:bg-background-dark transition-colors shadow-sm hover:cursor-pointer">
+                    Upload
+                  </button>
+                  <button
+                    className="px-4 py-2 text-sm font-medium text-red-500 bg-transparent border border-transparent rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors hover:cursor-pointer"
+                    onClick={cancelImageSelection}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
-        <div className="h-px w-full bg-border-light dark:bg-border-dark"></div>
+        <div className="h-px w-full bg-border-light dark:bg-border-dark" />
         <form
           id="profile-edit-form"
           className="flex flex-col gap-5"
