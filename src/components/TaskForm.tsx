@@ -11,7 +11,7 @@ export function TaskForm({ onAddTask }: TaskFormProps) {
     register,
     handleSubmit,
     formState: { isValid },
-  } = useForm({
+  } = useForm<TaskFormInputs>({
     resolver: zodResolver(TaskFormSchema),
   });
 

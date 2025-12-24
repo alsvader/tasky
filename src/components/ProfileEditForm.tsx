@@ -1,8 +1,23 @@
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useSettingsModal } from "@/hooks/useSettingsModal";
 import { Modal } from "@/components/Modal";
+import { type ProfileFormInputs, ProfileFormSchema } from "@/components/types";
 
 export function ProfileEditForm() {
   const { isSettingsOpen, onClose } = useSettingsModal();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<ProfileFormInputs>({
+    resolver: zodResolver(ProfileFormSchema),
+  });
+
+  const onSubmit: SubmitHandler<ProfileFormInputs> = (data) => {
+    console.log("Update profile:", data);
+  };
 
   return (
     <Modal isOpen={isSettingsOpen} onClose={onClose}>
@@ -47,7 +62,11 @@ export function ProfileEditForm() {
           </div>
         </div>
         <div className="h-px w-full bg-border-light dark:bg-border-dark"></div>
-        <form className="flex flex-col gap-5">
+        <form
+          id="profile-edit-form"
+          className="flex flex-col gap-5"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <h4 className="text-sm font-bold uppercase tracking-wider text-secondary-light dark:text-secondary-dark">
             Personal Information
           </h4>
@@ -59,7 +78,7 @@ export function ProfileEditForm() {
               <input
                 className="form-input w-full rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-light dark:text-dark focus:border-primary focus:ring-primary/50 text-sm py-2.5 placeholder:text-secondary-light pl-3"
                 type="text"
-                value="Alex"
+                {...register("firstName", { required: true })}
               />
             </label>
             <label className="flex flex-col gap-1.5">
@@ -69,7 +88,7 @@ export function ProfileEditForm() {
               <input
                 className="form-input w-full rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-light dark:text-dark focus:border-primary focus:ring-primary/50 text-sm py-2.5 placeholder:text-secondary-light pl-3"
                 type="text"
-                value="Morgan"
+                {...register("lastName", { required: true })}
               />
             </label>
           </div>
@@ -86,7 +105,7 @@ export function ProfileEditForm() {
               <input
                 className="form-input w-full rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-light dark:text-dark focus:border-primary focus:ring-primary/50 text-sm py-2.5 pl-10 placeholder:text-secondary-light"
                 type="email"
-                value="alex.morgan@company.com"
+                {...register("email", { required: true })}
               />
             </div>
           </label>
@@ -110,7 +129,12 @@ export function ProfileEditForm() {
         >
           Cancel
         </button>
-        <button className="px-5 py-2.5 text-sm font-bold text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition-all focus:ring-2 focus:ring-primary/20 hover:cursor-pointer">
+        <button
+          form="profile-edit-form"
+          disabled={!isValid}
+          type="submit"
+          className="px-5 py-2.5 text-sm font-bold text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition-all focus:ring-2 focus:ring-primary/20 hover:cursor-pointer disabled:cursor-not-allowed disabled:bg-primary/50  duration-200 ease-in-out"
+        >
           Save Changes
         </button>
       </Modal.Footer>
