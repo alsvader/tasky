@@ -1,9 +1,11 @@
 import { Outlet } from "react-router";
 import { Header } from "@/components/Header";
+import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/hooks/useTheme";
 import { cn } from "@/utils/cn";
 
 export function RootLayout() {
+  const { isAuthenticated } = useAuth();
   const { theme } = useTheme();
 
   return (
@@ -13,7 +15,7 @@ export function RootLayout() {
         theme
       )}
     >
-      {/* <Header /> */}
+      {isAuthenticated && <Header />}
       <Outlet />
     </main>
   );
