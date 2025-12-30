@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import { RootLayout } from "@/components/RootLayout";
 import { Login } from "@/pages/Login";
 import { Signup } from "@/pages/Signup";
@@ -12,7 +13,13 @@ function App() {
     <ThemeProvider>
       <SettingsModalProvider>
         <RootLayout>
-          <ChangePassword />
+          <Dashboard />
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 5500,
+            }}
+          />
         </RootLayout>
       </SettingsModalProvider>
     </ThemeProvider>

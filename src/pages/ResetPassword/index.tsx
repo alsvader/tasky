@@ -1,5 +1,6 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
 import {
   ResetPasswordFormSchema,
   type ResetPasswordFormInputs,
@@ -10,14 +11,23 @@ export function ResetPassword() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { isValid, errors },
   } = useForm<ResetPasswordFormInputs>({
     mode: "onChange",
     resolver: zodResolver(ResetPasswordFormSchema),
   });
 
+  const resetForm = () => {
+    reset();
+  };
+
   const onSubmit: SubmitHandler<ResetPasswordFormInputs> = (data) => {
     console.log("Reset Password:", data);
+    toast.success(
+      "If an account with that email exists, a reset link has been sent."
+    );
+    resetForm();
   };
 
   return (

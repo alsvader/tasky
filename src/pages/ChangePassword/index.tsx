@@ -1,5 +1,6 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
 import {
   ChangePasswordFormSchema,
   type ChangePasswordFormInputs,
@@ -10,14 +11,21 @@ export function ChangePassword() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { isValid, errors },
   } = useForm<ChangePasswordFormInputs>({
     mode: "onChange",
     resolver: zodResolver(ChangePasswordFormSchema),
   });
 
+  const resetForm = () => {
+    reset();
+  };
+
   const onSubmit: SubmitHandler<ChangePasswordFormInputs> = (data) => {
     console.log("Change Password:", data);
+    toast.success("Your password has been updated.");
+    resetForm();
   };
 
   return (
@@ -27,7 +35,7 @@ export function ChangePassword() {
           className="mb-6 justify-center"
           imageClassName="w-5/6 md:w-4/5"
         />
-        <div className="w-full rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/50 sm:p-8">
+        <div className="w-full rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-[#1a2530] sm:p-8">
           <div className="flex flex-col items-center">
             <h1 className="font-bold text-slate-900 dark:text-white tracking-light text-2xl leading-tight text-center pb-2">
               Change Password
