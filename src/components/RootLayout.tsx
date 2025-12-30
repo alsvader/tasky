@@ -1,9 +1,9 @@
-import type { PropsWithChildren } from "react";
+import { Outlet } from "react-router";
 import { Header } from "@/components/Header";
 import { useTheme } from "@/hooks/useTheme";
 import { cn } from "@/utils/cn";
 
-export function RootLayout({ children }: PropsWithChildren) {
+export function RootLayout() {
   const { theme } = useTheme();
 
   return (
@@ -13,8 +13,8 @@ export function RootLayout({ children }: PropsWithChildren) {
         theme
       )}
     >
-      <Header />
-      {children}
+      {/* <Header /> */}
+      <Outlet />
     </main>
   );
 }

@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { Link } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSettingsModal } from "@/hooks/useSettingsModal";
@@ -156,12 +157,12 @@ export function ProfileEditForm() {
             <span className="text-sm font-medium text-light dark:text-dark">
               Password
             </span>
-            <a
+            <Link
               className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-              href="#"
+              to="/change-password"
             >
               Change Password
-            </a>
+            </Link>
           </div>
         </form>
       </Modal.Body>

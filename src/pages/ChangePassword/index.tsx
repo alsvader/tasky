@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
@@ -114,12 +115,12 @@ export function ChangePassword() {
             <Button disabled={!isValid} type="submit">
               Save Changes
             </Button>
-            <a
+            <Link
               className="text-slate-500 text-sm font-normal leading-normal text-center transition hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-              href="#"
+              to="/"
             >
               Cancel
-            </a>
+            </Link>
           </form>
         </div>
       </div>

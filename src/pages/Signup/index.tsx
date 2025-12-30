@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TaskyIcon } from "@/components/Icons/TaskyIcon";
@@ -154,12 +155,12 @@ export function Signup() {
                   <div className="text-center">
                     <p className="text-sm text-label-light dark:text-label-dark">
                       Already have an account?
-                      <a
+                      <Link
                         className="font-medium text-primary hover:underline ml-1"
-                        href="#"
+                        to="/login"
                       >
                         Sign In
-                      </a>
+                      </Link>
                     </p>
                   </div>
                 </form>

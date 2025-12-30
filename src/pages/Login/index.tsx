@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TaskyIcon } from "@/components/Icons/TaskyIcon";
@@ -99,12 +100,12 @@ export function Login() {
               </div>
 
               <div className="flex justify-end w-full">
-                <a
+                <Link
                   className="text-sm font-medium text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark focus:ring-primary rounded-sm"
-                  href="#"
+                  to="/reset-password"
                 >
                   Forgot Password?
-                </a>
+                </Link>
               </div>
 
               <Button disabled={!isValid} type="submit">
@@ -114,12 +115,12 @@ export function Login() {
             <div className="flex justify-center mt-6">
               <p className="text-slate-600 dark:text-slate-400 text-sm">
                 Don't have an account?{" "}
-                <a
+                <Link
                   className="font-medium text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark focus:ring-primary rounded-sm"
-                  href="#"
+                  to="/signup"
                 >
                   Sign Up
-                </a>
+                </Link>
               </p>
             </div>
           </div>

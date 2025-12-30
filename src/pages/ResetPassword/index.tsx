@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
@@ -83,12 +84,12 @@ export function ResetPassword() {
             <Button disabled={!isValid} type="submit">
               Send Reset Link
             </Button>
-            <a
+            <Link
               className="text-primary text-sm font-normal leading-normal text-center underline transition hover:text-primary/90"
-              href="#"
+              to="/login"
             >
               Remembered it? Back to Login
-            </a>
+            </Link>
           </form>
         </div>
       </div>
