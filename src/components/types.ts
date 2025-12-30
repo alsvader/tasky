@@ -42,3 +42,9 @@ export const SignupFormSchema = z
   });
 
 export type SignupFormInputs = z.infer<typeof SignupFormSchema>;
+
+export const ResetPasswordFormSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
+
+export type ResetPasswordFormInputs = z.infer<typeof ResetPasswordFormSchema>;

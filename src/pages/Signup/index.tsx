@@ -142,7 +142,7 @@ export function Signup() {
                       </div>
                       {errors.confirmPassword && (
                         <p className="mt-2 text-sm text-error">
-                          Passwords do not match.
+                          {errors.confirmPassword.message}
                         </p>
                       )}
                     </label>

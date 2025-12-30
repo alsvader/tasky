@@ -2,6 +2,7 @@ import { RootLayout } from "@/components/RootLayout";
 import { Login } from "@/pages/Login";
 import { Signup } from "@/pages/Signup";
 import { Dashboard } from "@/pages/Dashboard";
+import { ResetPassword } from "@/pages/ResetPassword";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import { SettingsModalProvider } from "@/context/SettingsModalContext/SettingsModalProvider";
 
@@ -10,7 +11,7 @@ function App() {
     <ThemeProvider>
       <SettingsModalProvider>
         <RootLayout>
-          <Signup />
+          <ResetPassword />
         </RootLayout>
       </SettingsModalProvider>
     </ThemeProvider>
