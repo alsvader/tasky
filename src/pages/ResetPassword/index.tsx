@@ -6,6 +6,7 @@ import {
   type ResetPasswordFormInputs,
 } from "@/components/types";
 import { TaskyIcon } from "@/components/Icons/TaskyIcon";
+import { Button } from "@/components/Button";
 
 export function ResetPassword() {
   const {
@@ -79,13 +80,9 @@ export function ResetPassword() {
                 </p>
               )}
             </label>
-            <button
-              disabled={!isValid}
-              type="submit"
-              className="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary py-3 px-5 text-base font-bold leading-normal text-white transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark  hover:cursor-pointer disabled:cursor-not-allowed disabled:bg-primary/50 duration-200 ease-in-out"
-            >
-              <span className="truncate">Send Reset Link</span>
-            </button>
+            <Button disabled={!isValid} type="submit">
+              Send Reset Link
+            </Button>
             <a
               className="text-primary text-sm font-normal leading-normal text-center underline transition hover:text-primary/90"
               href="#"

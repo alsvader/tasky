@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TaskyIcon } from "@/components/Icons/TaskyIcon";
+import { Button } from "@/components/Button";
 import { type SignupFormInputs, SignupFormSchema } from "@/components/types";
 import { cn } from "@/utils/cn";
 
@@ -147,13 +148,9 @@ export function Signup() {
                       )}
                     </label>
                   </div>
-                  <button
-                    disabled={!isValid}
-                    className="flex w-full items-center justify-center rounded-lg bg-primary h-12 px-6 text-base font-semibold text-white transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark hover:cursor-pointer disabled:cursor-not-allowed disabled:bg-primary/50 duration-200 ease-in-out"
-                    type="submit"
-                  >
+                  <Button disabled={!isValid} type="submit">
                     Create Account
-                  </button>
+                  </Button>
                   <div className="text-center">
                     <p className="text-sm text-label-light dark:text-label-dark">
                       Already have an account?

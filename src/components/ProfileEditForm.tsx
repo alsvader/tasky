@@ -3,6 +3,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSettingsModal } from "@/hooks/useSettingsModal";
 import { Modal } from "@/components/Modal";
+import { Button } from "@/components/Button";
 import { type ProfileFormInputs, ProfileFormSchema } from "@/components/types";
 
 import UserIcon from "@/assets/user.png";
@@ -171,14 +172,14 @@ export function ProfileEditForm() {
         >
           Cancel
         </button>
-        <button
+        <Button
           form="profile-edit-form"
           disabled={!isValid}
           type="submit"
-          className="px-5 py-2.5 text-sm font-bold text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition-all focus:ring-2 focus:ring-primary/20 hover:cursor-pointer disabled:cursor-not-allowed disabled:bg-primary/50  duration-200 ease-in-out"
+          className="px-5 py-2.5 text-sm shadow-sm w-fit"
         >
           Save Changes
-        </button>
+        </Button>
       </Modal.Footer>
     </Modal>
   );

@@ -1,5 +1,6 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/Button";
 import { type TaskFormInputs, TaskFormSchema } from "@/components/types";
 
 export interface TaskFormProps {
@@ -34,13 +35,13 @@ export function TaskForm({ onAddTask }: TaskFormProps) {
           {...register("task", { required: true })}
         />
       </label>
-      <button
+      <Button
         disabled={!isValid}
         type="submit"
-        className="flex min-w-[84px] w-full sm:w-auto cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] disabled:cursor-not-allowed disabled:bg-primary/50 hover:bg-primary/90 transition-colors duration-200 ease-in-out"
+        className="min-w-[84px] w-full sm:w-auto  h-14 px-5"
       >
-        <span className="truncate">Add Task</span>
-      </button>
+        Add Task
+      </Button>
     </form>
   );
 }

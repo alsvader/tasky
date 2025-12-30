@@ -6,6 +6,7 @@ import {
   type ChangePasswordFormInputs,
 } from "@/components/types";
 import { TaskyIcon } from "@/components/Icons/TaskyIcon";
+import { Button } from "@/components/Button";
 
 export function ChangePassword() {
   const {
@@ -110,13 +111,9 @@ export function ChangePassword() {
                 </p>
               )}
             </label>
-            <button
-              disabled={!isValid}
-              type="submit"
-              className="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary py-3 px-5 text-base font-bold leading-normal text-white transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark mt-2 disabled:cursor-not-allowed disabled:bg-primary/50 duration-200 ease-in-out"
-            >
-              <span className="truncate">Save Changes</span>
-            </button>
+            <Button disabled={!isValid} type="submit">
+              Save Changes
+            </Button>
             <a
               className="text-slate-500 text-sm font-normal leading-normal text-center transition hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
               href="#"

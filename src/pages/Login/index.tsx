@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TaskyIcon } from "@/components/Icons/TaskyIcon";
+import { Button } from "@/components/Button";
 import { type LoginFormInputs, LoginFormSchema } from "@/components/types";
 
 export function Login() {
@@ -106,13 +107,9 @@ export function Login() {
                 </a>
               </div>
 
-              <button
-                disabled={!isValid}
-                type="submit"
-                className="flex items-center justify-center w-full h-12 px-6 bg-primary text-white rounded-lg text-base font-bold leading-normal hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark focus:ring-primary transition-colors duration-200 disabled:cursor-not-allowed disabled:bg-primary/50 ease-in-out"
-              >
+              <Button disabled={!isValid} type="submit">
                 Log In
-              </button>
+              </Button>
             </form>
             <div className="flex justify-center mt-6">
               <p className="text-slate-600 dark:text-slate-400 text-sm">
