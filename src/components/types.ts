@@ -19,3 +19,26 @@ export const ProfileFormSchema = z.object({
 });
 
 export type ProfileFormInputs = z.infer<typeof ProfileFormSchema>;
+
+export const LoginFormSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
+export type LoginFormInputs = z.infer<typeof LoginFormSchema>;
+
+export const SignupFormSchema = z
+  .object({
+    fullname: z.string().min(1, "Full name is required"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z
+      .string()
+      .min(6, "Confirm Password must be at least 6 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export type SignupFormInputs = z.infer<typeof SignupFormSchema>;

@@ -1,11 +1,25 @@
 import { useState } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { TaskyIcon } from "@/components/Icons/TaskyIcon";
+import { type LoginFormInputs, LoginFormSchema } from "@/components/types";
 
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<LoginFormInputs>({
+    resolver: zodResolver(LoginFormSchema),
+  });
 
   const togglePassword = () => setShowPassword((prev) => !prev);
+
+  const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
+    console.log("Login:", data);
+  };
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center pt-20 px-4">
@@ -25,7 +39,10 @@ export function Login() {
               Log in to your account to continue.
             </p>
 
-            <div className="flex flex-col w-full gap-4">
+            <form
+              className="flex flex-col w-full gap-4"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <div className="flex w-full flex-col">
                 <label className="flex flex-col w-full">
                   <p className="text-slate-900 dark:text-white text-sm font-medium leading-normal pb-2">
@@ -36,10 +53,10 @@ export function Login() {
                       mail
                     </span>
                     <input
-                      name="email"
                       className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-border-dark bg-slate-50 dark:bg-card-dark focus:border-primary h-12 placeholder:text-slate-400 dark:placeholder:text-secondary-dark pl-10 pr-4 text-base font-normal leading-normal"
                       placeholder="Enter your email"
                       type="email"
+                      {...register("email", { required: true })}
                     />
                   </div>
                 </label>
@@ -55,14 +72,14 @@ export function Login() {
                       lock
                     </span>
                     <input
-                      name="password"
                       className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-border-dark bg-slate-50 dark:bg-card-dark focus:border-primary h-12 placeholder:text-slate-400 dark:placeholder:text-secondary-dark pl-10 pr-10 text-base font-normal leading-normal"
                       placeholder="Enter your password"
                       type={showPassword ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      autoComplete="off"
+                      {...register("password", { required: true })}
                     />
                     <button
+                      type="button"
                       aria-label="Toggle password visibility"
                       className="absolute top-3.5 right-3 text-slate-400 dark:text-slate-500 hover:text-primary dark:hover:text-primary"
                       onClick={togglePassword}
@@ -89,10 +106,14 @@ export function Login() {
                 </a>
               </div>
 
-              <button className="flex items-center justify-center w-full h-12 px-6 bg-primary text-white rounded-lg text-base font-bold leading-normal hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark focus:ring-primary transition-colors duration-200">
+              <button
+                disabled={!isValid}
+                type="submit"
+                className="flex items-center justify-center w-full h-12 px-6 bg-primary text-white rounded-lg text-base font-bold leading-normal hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark focus:ring-primary transition-colors duration-200 disabled:cursor-not-allowed disabled:bg-primary/50 ease-in-out"
+              >
                 Log In
               </button>
-            </div>
+            </form>
             <div className="flex justify-center mt-6">
               <p className="text-slate-600 dark:text-slate-400 text-sm">
                 Don't have an account?{" "}

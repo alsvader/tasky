@@ -1,6 +1,37 @@
+import { useState } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { TaskyIcon } from "@/components/Icons/TaskyIcon";
+import { type SignupFormInputs, SignupFormSchema } from "@/components/types";
+import { cn } from "@/utils/cn";
 
 export function Signup() {
+  const [showPasswords, setShowPasswords] = useState({
+    password: false,
+    confirmPassword: false,
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid, errors },
+  } = useForm<SignupFormInputs>({
+    mode: "onChange",
+    resolver: zodResolver(SignupFormSchema),
+  });
+
+  const onSubmit: SubmitHandler<SignupFormInputs> = (data) => {
+    console.log("Signup:", data);
+  };
+
+  const togglePassword = (field: "password" | "confirmPassword") => {
+    console.log("togglePassword", field);
+    setShowPasswords((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
   return (
     <div className="relative flex lg:min-h-screen w-full flex-col">
       <div className="layout-container flex h-full grow flex-col">
@@ -27,7 +58,7 @@ export function Signup() {
                     </p>
                   </div>
                 </div>
-                <form action="#" className="space-y-6" method="POST">
+                <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                   <div className="flex flex-col gap-4">
                     <label className="flex flex-col">
                       <p className="pb-2 text-sm font-medium leading-normal text-label-light dark:text-label-dark">
@@ -37,7 +68,7 @@ export function Signup() {
                         className="form-input flex h-12 w-full flex-1 resize-none overflow-hidden rounded-lg border border-border-light bg-input-bg-light p-3 text-base font-normal leading-normal text-text-light placeholder:text-label-light/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-input-bg-dark dark:text-text-dark dark:placeholder:text-label-dark/70 dark:focus:border-primary"
                         placeholder="Enter your full name"
                         type="text"
-                        value=""
+                        {...register("fullname", { required: true })}
                       />
                     </label>
                     <label className="flex flex-col">
@@ -48,7 +79,7 @@ export function Signup() {
                         className="form-input flex h-12 w-full flex-1 resize-none overflow-hidden rounded-lg border border-border-light bg-input-bg-light p-3 text-base font-normal leading-normal text-text-light placeholder:text-label-light/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-input-bg-dark dark:text-text-dark dark:placeholder:text-label-dark/70 dark:focus:border-primary"
                         placeholder="Enter your email address"
                         type="email"
-                        value=""
+                        {...register("email", { required: true })}
                       />
                     </label>
                     <label className="flex flex-col">
@@ -59,12 +90,13 @@ export function Signup() {
                         <input
                           className="form-input flex h-12 w-full flex-1 resize-none overflow-hidden rounded-lg border border-border-light bg-input-bg-light p-3 pr-10 text-base font-normal leading-normal text-text-light placeholder:text-label-light/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-input-bg-dark dark:text-text-dark dark:placeholder:text-label-dark/70 dark:focus:border-primary"
                           placeholder="Enter your password"
-                          type="password"
-                          value=""
+                          type={showPasswords.password ? "text" : "password"}
+                          {...register("password", { required: true })}
                         />
                         <button
                           className="absolute inset-y-0 right-0 flex items-center pr-3 text-label-light dark:text-label-dark"
                           type="button"
+                          onClick={() => togglePassword("password")}
                         >
                           <span
                             className="material-symbols-outlined text-xl"
@@ -81,19 +113,43 @@ export function Signup() {
                       </p>
                       <div className="relative flex items-center">
                         <input
-                          className="form-input flex h-12 w-full flex-1 resize-none overflow-hidden rounded-lg border border-border-light bg-input-bg-light p-3 pr-10 text-base font-normal leading-normal text-text-light placeholder:text-label-light/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-error dark:bg-input-bg-dark dark:text-text-dark dark:placeholder:text-label-dark/70 dark:focus:border-primary"
+                          className={cn(
+                            "form-input flex h-12 w-full flex-1 resize-none overflow-hidden rounded-lg border border-border-light bg-input-bg-light p-3 pr-10 text-base font-normal leading-normal text-text-light placeholder:text-label-light/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-input-bg-dark dark:text-text-dark dark:placeholder:text-label-dark/70 dark:focus:border-primary",
+                            {
+                              "border-error": errors.confirmPassword,
+                            }
+                          )}
                           placeholder="Confirm your password"
-                          type="password"
-                          value=""
+                          type={
+                            showPasswords.confirmPassword ? "text" : "password"
+                          }
+                          {...register("confirmPassword", {
+                            required: true,
+                          })}
                         />
+                        <button
+                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-label-light dark:text-label-dark"
+                          type="button"
+                          onClick={() => togglePassword("confirmPassword")}
+                        >
+                          <span
+                            className="material-symbols-outlined text-xl"
+                            data-icon="visibility"
+                          >
+                            visibility
+                          </span>
+                        </button>
                       </div>
-                      <p className="mt-2 text-sm text-error">
-                        Passwords do not match.
-                      </p>
+                      {errors.confirmPassword && (
+                        <p className="mt-2 text-sm text-error">
+                          Passwords do not match.
+                        </p>
+                      )}
                     </label>
                   </div>
                   <button
-                    className="flex w-full items-center justify-center rounded-lg bg-primary h-12 px-6 text-base font-semibold text-white transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark hover:cursor-pointer"
+                    disabled={!isValid}
+                    className="flex w-full items-center justify-center rounded-lg bg-primary h-12 px-6 text-base font-semibold text-white transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark hover:cursor-pointer disabled:cursor-not-allowed disabled:bg-primary/50 duration-200 ease-in-out"
                     type="submit"
                   >
                     Create Account

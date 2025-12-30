@@ -10,7 +10,7 @@ function App() {
     <ThemeProvider>
       <SettingsModalProvider>
         <RootLayout>
-          <Dashboard />
+          <Signup />
         </RootLayout>
       </SettingsModalProvider>
     </ThemeProvider>
