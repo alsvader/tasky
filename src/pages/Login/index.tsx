@@ -1,13 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/hooks/useAuth";
 import { TaskyIcon } from "@/components/Icons/TaskyIcon";
 import { Button } from "@/components/Button";
 import { type LoginFormInputs, LoginFormSchema } from "@/components/types";
 
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
+
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -19,8 +24,17 @@ export function Login() {
 
   const togglePassword = () => setShowPassword((prev) => !prev);
 
-  const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
-    console.log("Login:", data);
+  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+    try {
+      const response = await signIn(data);
+
+      if (response.session) {
+        toast.success("Welcome back!");
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("An error occurred during login. Try again.");
+    }
   };
 
   return (

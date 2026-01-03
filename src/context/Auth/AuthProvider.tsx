@@ -24,8 +24,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
     };
   }, []);
 
-  const signIn = (dataForm: LoginFormInputs) => {
-    // Implement sign-in logic here
+  const signIn = async (dataForm: LoginFormInputs) => {
+    const { data, error } = await supabase.auth.signInWithPassword(dataForm);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
   };
 
   const signUp = async (dataForm: SignupFormData) => {

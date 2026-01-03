@@ -4,7 +4,7 @@ import type { LoginFormInputs, SignupFormData } from "@/components/types";
 
 export interface AuthContextProps {
   session: Session | null;
-  signIn: (dataForm: LoginFormInputs) => void;
+  signIn: (dataForm: LoginFormInputs) => Promise<AuthResponse["data"]>;
   signUp: (dataForm: SignupFormData) => Promise<AuthResponse["data"]>;
   signOut: () => Promise<void>;
 }
