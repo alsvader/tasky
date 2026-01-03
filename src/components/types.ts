@@ -2,9 +2,13 @@ import { z } from "zod/v3";
 
 export interface Task {
   id: string;
+  user_id: string;
   title: string;
   completed: boolean;
+  created_at?: string;
 }
+
+export type TaskFormData = Pick<Task, "title" | "completed">;
 
 export const TaskFormSchema = z.object({
   task: z.string().min(1, "Task description is required"),

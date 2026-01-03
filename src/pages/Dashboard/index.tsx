@@ -1,24 +1,49 @@
+import toast from "react-hot-toast";
 import { TaskForm } from "@/components/TaskForm";
 import { ProfileEditForm } from "@/components/ProfileEditForm";
 import { TaskList } from "@/components/TaskList";
-import { type TaskFormInputs } from "@/components/types";
-import { DUMMY_DATA } from "./dummy-data";
+import type { TaskFormInputs, TaskFormData } from "@/components/types";
+import { useTasks } from "@/hooks/useTasks";
 
 export function Dashboard() {
-  const completed = DUMMY_DATA.filter((task) => task.completed);
-  const active = DUMMY_DATA.filter((task) => !task.completed);
+  const { tasks, addTask, toggleTask, deleteTask } = useTasks();
 
-  const onAddTask = (task: TaskFormInputs) => {
-    console.log("Add task:", task);
+  const onAddTask = async (task: TaskFormInputs) => {
+    try {
+      const newTask: TaskFormData = {
+        title: task.task,
+        completed: false,
+      };
+
+      await addTask(newTask);
+      toast.success("Task added successfully!");
+    } catch (_) {
+      toast.error("Something went wrong, please try again.");
+    }
   };
 
-  const onToggleTask = (id: string) => {
+  const onToggleTask = async (id: string) => {
     console.log("Toggle task with id:", id);
+
+    try {
+      await toggleTask(id);
+      toast.success("Task toggled successfully!");
+    } catch (error) {
+      toast.error("Something went wrong, please try again.");
+    }
   };
 
-  const onDeleteTask = (id: string) => {
-    console.log("Delete task with id:", id);
+  const onDeleteTask = async (id: string) => {
+    try {
+      await deleteTask(id);
+      toast.success("Task deleted successfully!");
+    } catch (error) {
+      toast.error("Something went wrong, please try again.");
+    }
   };
+
+  const completed = tasks.filter((task) => task.completed);
+  const active = tasks.filter((task) => !task.completed);
 
   return (
     <section className="flex flex-col max-w-[960px] m-auto">
