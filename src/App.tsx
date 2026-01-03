@@ -13,7 +13,7 @@ function App() {
           <Toaster
             position="top-right"
             toastOptions={{
-              duration: 5500,
+              duration: 6000,
             }}
           />
         </SettingsModalProvider>

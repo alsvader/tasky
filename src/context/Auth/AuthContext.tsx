@@ -1,10 +1,11 @@
 import { createContext } from "react";
+import type { Session, AuthResponse } from "@supabase/supabase-js";
 import type { LoginFormInputs, SignupFormData } from "@/components/types";
 
 export interface AuthContextProps {
-  isAuthenticated: boolean;
+  session: Session | null;
   signIn: (dataForm: LoginFormInputs) => void;
-  signUp: (dataForm: SignupFormData) => void;
+  signUp: (dataForm: SignupFormData) => Promise<AuthResponse["data"]>;
   signOut: () => void;
 }
 

@@ -5,7 +5,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { cn } from "@/utils/cn";
 
 export function RootLayout() {
-  const { isAuthenticated } = useAuth();
+  const { session: isAuthenticated } = useAuth();
   const { theme } = useTheme();
 
   return (

@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
 
 export function PublicRoute({ children }: PropsWithChildren) {
-  const { isAuthenticated } = useAuth();
+  const { session: isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
     // Redirect to dashboard

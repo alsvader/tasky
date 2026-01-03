@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
 import { TaskyIcon } from "@/components/Icons/TaskyIcon";
 import { Button } from "@/components/Button";
 import { type SignupFormInputs, SignupFormSchema } from "@/components/types";
+import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/utils/cn";
 
 export function Signup() {
@@ -13,17 +15,35 @@ export function Signup() {
     confirmPassword: false,
   });
 
+  const { signUp } = useAuth();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { isValid, errors },
+    reset,
   } = useForm<SignupFormInputs>({
     mode: "onChange",
     resolver: zodResolver(SignupFormSchema),
   });
 
-  const onSubmit: SubmitHandler<SignupFormInputs> = (data) => {
-    console.log("Signup:", data);
+  const resetForm = () => {
+    reset();
+  };
+
+  const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
+    try {
+      const response = await signUp(data);
+
+      if (response.session) {
+        resetForm();
+        toast.success("Welcome to Tasky!");
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("An error occurred during sign up.");
+    }
   };
 
   const togglePassword = (field: "password" | "confirmPassword") => {

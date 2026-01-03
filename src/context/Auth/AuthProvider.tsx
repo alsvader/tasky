@@ -1,27 +1,59 @@
-import { useState, type PropsWithChildren } from "react";
+import { useEffect, useState, type PropsWithChildren } from "react";
+import type { Session } from "@supabase/supabase-js";
+import { supabase } from "@/utils/supabase";
 import { AuthContext } from "@/context/Auth/AuthContext";
 import { type LoginFormInputs, type SignupFormData } from "@/components/types";
 
 export function AuthProvider({ children }: PropsWithChildren) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT") {
+        setSession(null);
+        return;
+      }
+
+      setSession(session);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const signIn = (dataForm: LoginFormInputs) => {
     // Implement sign-in logic here
-    setIsAuthenticated(true);
   };
 
-  const signUp = (dataForm: SignupFormData) => {
-    // Implement sign-up logic here
-    setIsAuthenticated(true);
+  const signUp = async (dataForm: SignupFormData) => {
+    const { email, password, fullname } = dataForm;
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          fullname,
+        },
+      },
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
   };
 
-  const signOut = () => {
+  const signOut = async () => {
     // Implement sign-out logic here
-    setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ session, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );
