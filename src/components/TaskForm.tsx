@@ -1,10 +1,14 @@
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import type { SubmitHandler, UseFormReset } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/Button";
 import { type TaskFormInputs, TaskFormSchema } from "@/components/types";
 
 export interface TaskFormProps {
-  onAddTask: (task: TaskFormInputs) => void;
+  onAddTask: (
+    task: TaskFormInputs,
+    reset: UseFormReset<TaskFormInputs>
+  ) => void;
 }
 
 export function TaskForm({ onAddTask }: TaskFormProps) {
@@ -12,12 +16,13 @@ export function TaskForm({ onAddTask }: TaskFormProps) {
     register,
     handleSubmit,
     formState: { isValid },
+    reset,
   } = useForm<TaskFormInputs>({
     resolver: zodResolver(TaskFormSchema),
   });
 
   const onSubmit: SubmitHandler<TaskFormInputs> = (data) => {
-    onAddTask?.(data);
+    onAddTask?.(data, reset);
   };
 
   return (

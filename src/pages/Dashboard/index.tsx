@@ -1,3 +1,4 @@
+import type { UseFormReset } from "react-hook-form";
 import toast from "react-hot-toast";
 import { TaskForm } from "@/components/TaskForm";
 import { ProfileEditForm } from "@/components/ProfileEditForm";
@@ -8,7 +9,10 @@ import { useTasks } from "@/hooks/useTasks";
 export function Dashboard() {
   const { tasks, addTask, toggleTask, deleteTask } = useTasks();
 
-  const onAddTask = async (task: TaskFormInputs) => {
+  const onAddTask = async (
+    task: TaskFormInputs,
+    reset: UseFormReset<TaskFormInputs>
+  ) => {
     try {
       const newTask: TaskFormData = {
         title: task.task,
@@ -16,6 +20,7 @@ export function Dashboard() {
       };
 
       await addTask(newTask);
+      reset();
       toast.success("Task added successfully!");
     } catch (_) {
       toast.error("Something went wrong, please try again.");
