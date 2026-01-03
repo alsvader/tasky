@@ -50,6 +50,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   const signOut = async () => {
     // Implement sign-out logic here
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      throw new Error(error.message);
+    }
   };
 
   return (

@@ -6,7 +6,7 @@ export interface AuthContextProps {
   session: Session | null;
   signIn: (dataForm: LoginFormInputs) => void;
   signUp: (dataForm: SignupFormData) => Promise<AuthResponse["data"]>;
-  signOut: () => void;
+  signOut: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextProps | null>(null);

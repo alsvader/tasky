@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from "react";
+import toast from "react-hot-toast";
 import { useSettingsModal } from "@/hooks/useSettingsModal";
+import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/utils/cn";
 
 export function Menu() {
   const [isOpen, setIsOpen] = useState(false);
   const { onOpen } = useSettingsModal();
+  const { signOut } = useAuth();
 
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -30,6 +33,15 @@ export function Menu() {
     event.currentTarget.blur();
     toggleMenu();
     onOpen();
+  };
+
+  const onSignOut = async () => {
+    try {
+      await signOut();
+      toast.success("See you soon!");
+    } catch (error) {
+      toast.error("An error occurred during sign out.");
+    }
   };
 
   return (
@@ -71,6 +83,7 @@ export function Menu() {
           <button
             className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-red-500 rounded-lg hover:bg-background-light dark:hover:bg-background-dark transition-colors hover:cursor-pointer"
             role="menuitem"
+            onClick={onSignOut}
           >
             <span className="material-symbols-outlined text-[20px]">
               logout
