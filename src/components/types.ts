@@ -8,6 +8,13 @@ export interface Task {
   created_at?: string;
 }
 
+export interface Profile {
+  id: string;
+  fullname: string;
+  photo_url: string;
+  created_at?: string;
+}
+
 export type TaskFormData = Pick<Task, "title" | "completed">;
 
 export const TaskFormSchema = z.object({
@@ -17,9 +24,7 @@ export const TaskFormSchema = z.object({
 export type TaskFormInputs = z.infer<typeof TaskFormSchema>;
 
 export const ProfileFormSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
+  fullname: z.string().min(1, "Full name is required"),
 });
 
 export type ProfileFormInputs = z.infer<typeof ProfileFormSchema>;

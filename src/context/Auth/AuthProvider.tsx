@@ -3,26 +3,35 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/utils/supabase";
 import { AuthContext } from "@/context/Auth/AuthContext";
 import { type LoginFormInputs, type SignupFormData } from "@/components/types";
+import { useProfile } from "@/hooks/useProfile";
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
 
+  const { profile, fetchUser } = useProfile(session?.user.id);
+
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange((event, newSession) => {
       if (event === "SIGNED_OUT") {
         setSession(null);
         return;
       }
 
-      setSession(session);
+      setSession(newSession);
     });
 
     return () => {
       subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    if (session && !profile) {
+      fetchUser();
+    }
+  });
 
   const signIn = async (dataForm: LoginFormInputs) => {
     const { data, error } = await supabase.auth.signInWithPassword(dataForm);
@@ -64,7 +73,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   };
 
   return (
-    <AuthContext.Provider value={{ session, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ session, profile, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );

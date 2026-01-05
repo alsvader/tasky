@@ -1,11 +1,18 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSettingsModal } from "@/hooks/useSettingsModal";
+import { useAuth } from "@/hooks/useAuth";
+import { useProfile } from "@/hooks/useProfile";
 import { Modal } from "@/components/Modal";
 import { Button } from "@/components/Button";
-import { type ProfileFormInputs, ProfileFormSchema } from "@/components/types";
+import {
+  type ProfileFormInputs,
+  ProfileFormSchema,
+  type Profile,
+} from "@/components/types";
 
 import UserIcon from "@/assets/user.png";
 
@@ -14,16 +21,32 @@ export function ProfileEditForm() {
   const { isSettingsOpen, onClose } = useSettingsModal();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const { profile, session } = useAuth();
+  const { updateProfile } = useProfile(session?.user.id);
+
   const {
     register,
     handleSubmit,
     formState: { isValid },
   } = useForm<ProfileFormInputs>({
     resolver: zodResolver(ProfileFormSchema),
+    defaultValues: {
+      fullname: profile?.fullname,
+    },
   });
 
-  const onSubmit: SubmitHandler<ProfileFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<ProfileFormInputs> = async (data) => {
     console.log("Update profile:", data);
+    try {
+      const profileUpdated = {
+        ...profile,
+        fullname: data.fullname,
+      };
+      await updateProfile(profileUpdated as Profile);
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      toast.error("Something went wrong, please try again.");
+    }
   };
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,29 +137,20 @@ export function ProfileEditForm() {
           <h4 className="text-sm font-bold uppercase tracking-wider text-secondary-light dark:text-secondary-dark">
             Personal Information
           </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1">
             <label className="flex flex-col gap-1.5">
               <span className="text-sm font-medium text-light dark:text-dark">
-                First Name
+                Full Name
               </span>
               <input
                 className="form-input w-full rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-light dark:text-dark focus:border-primary focus:ring-primary/50 text-sm py-2.5 placeholder:text-secondary-light pl-3"
                 type="text"
-                {...register("firstName", { required: true })}
-              />
-            </label>
-            <label className="flex flex-col gap-1.5">
-              <span className="text-sm font-medium text-light dark:text-dark">
-                Last Name
-              </span>
-              <input
-                className="form-input w-full rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-light dark:text-dark focus:border-primary focus:ring-primary/50 text-sm py-2.5 placeholder:text-secondary-light pl-3"
-                type="text"
-                {...register("lastName", { required: true })}
+                {...register("fullname", { required: true })}
+                defaultValue={profile?.fullname}
               />
             </label>
           </div>
-          <label className="flex flex-col gap-1.5">
+          {/* <label className="flex flex-col gap-1.5">
             <span className="text-sm font-medium text-light dark:text-dark">
               Email Address
             </span>
@@ -152,7 +166,7 @@ export function ProfileEditForm() {
                 {...register("email", { required: true })}
               />
             </div>
-          </label>
+          </label> */}
           <div className="flex flex-col gap-1.5">
             <span className="text-sm font-medium text-light dark:text-dark">
               Password
