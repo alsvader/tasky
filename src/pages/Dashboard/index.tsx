@@ -5,9 +5,12 @@ import { ProfileEditForm } from "@/components/ProfileEditForm";
 import { TaskList } from "@/components/TaskList";
 import type { TaskFormInputs, TaskFormData } from "@/components/types";
 import { useTasks } from "@/hooks/useTasks";
+import { useSettingsModal } from "@/hooks/useSettingsModal";
 
 export function Dashboard() {
   const { tasks, addTask, toggleTask, deleteTask } = useTasks();
+
+  const { isSettingsOpen } = useSettingsModal();
 
   const onAddTask = async (
     task: TaskFormInputs,
@@ -85,7 +88,7 @@ export function Dashboard() {
           />
         </div>
       </div>
-      <ProfileEditForm />
+      {isSettingsOpen && <ProfileEditForm />}
     </section>
   );
 }

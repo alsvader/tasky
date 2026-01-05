@@ -2,13 +2,18 @@ import { useEffect, useState, type PropsWithChildren } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/utils/supabase";
 import { AuthContext } from "@/context/Auth/AuthContext";
-import { type LoginFormInputs, type SignupFormData } from "@/components/types";
 import { useProfile } from "@/hooks/useProfile";
+import type {
+  LoginFormInputs,
+  SignupFormData,
+  Profile,
+} from "@/components/types";
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
 
-  const { profile, fetchUser } = useProfile(session?.user.id);
+  const { fetchUser } = useProfile(session?.user.id);
 
   useEffect(() => {
     const {
@@ -29,9 +34,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     if (session && !profile) {
-      fetchUser();
+      fetchUser().then((fetchedProfile) => {
+        setProfile(fetchedProfile);
+      });
     }
-  });
+  }, [session, profile, fetchUser]);
 
   const signIn = async (dataForm: LoginFormInputs) => {
     const { data, error } = await supabase.auth.signInWithPassword(dataForm);
@@ -72,8 +79,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }
   };
 
+  const updateProfile = async (profileUpdated: Profile) => {
+    setProfile(profileUpdated);
+  };
+
   return (
-    <AuthContext.Provider value={{ session, profile, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{ session, profile, signIn, signUp, signOut, updateProfile }}
+    >
       {children}
     </AuthContext.Provider>
   );

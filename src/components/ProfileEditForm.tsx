@@ -18,11 +18,18 @@ import UserIcon from "@/assets/user.png";
 
 export function ProfileEditForm() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [fileSelected, setFileSelected] = useState<File | null>(null);
   const { isSettingsOpen, onClose } = useSettingsModal();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { profile, session } = useAuth();
-  const { updateProfile } = useProfile(session?.user.id);
+  const { profile, session, updateProfile } = useAuth();
+  const { update, updateProfileImage } = useProfile(session?.user.id);
+
+  const avatar = imagePreview
+    ? imagePreview
+    : profile?.photo_url
+    ? profile?.photo_url
+    : UserIcon;
 
   const {
     register,
@@ -42,20 +49,22 @@ export function ProfileEditForm() {
         ...profile,
         fullname: data.fullname,
       };
-      await updateProfile(profileUpdated as Profile);
+      await update(profileUpdated as Profile);
       toast.success("Profile updated successfully!");
     } catch (error) {
       toast.error("Something went wrong, please try again.");
     }
   };
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       console.log("Selected file:", file);
       const url = URL.createObjectURL(file);
       setImagePreview(url);
-      // Handle file upload here
+      setFileSelected(file);
     }
   };
 
@@ -65,8 +74,32 @@ export function ProfileEditForm() {
 
   const cancelImageSelection = () => {
     setImagePreview(null);
+    setFileSelected(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
+    }
+  };
+
+  const uploadImage = async () => {
+    try {
+      if (fileSelected) {
+        console.log("Selected file:", fileSelected);
+
+        // Handle file upload here
+        const profileUpdated = await updateProfileImage(
+          fileSelected,
+          profile as Profile
+        );
+        setImagePreview(null);
+        setFileSelected(null);
+        updateProfile({
+          ...profileUpdated,
+        } as Profile);
+        toast.success("Profile image updated successfully!");
+      }
+    } catch (error) {
+      toast.error("Something went wrong, please try again.");
+      console.log(error);
     }
   };
 
@@ -91,7 +124,7 @@ export function ProfileEditForm() {
             <div className="relative group">
               <div className="size-20 rounded-full bg-cover bg-center ring-4 ring-background-light dark:ring-background-dark shadow-md">
                 <img
-                  src={imagePreview || UserIcon}
+                  src={avatar}
                   alt="Profile Picture"
                   className="w-full h-full rounded-full object-cover object-center"
                 />
@@ -114,7 +147,10 @@ export function ProfileEditForm() {
             <div className="flex flex-1 flex-col justify-center gap-3">
               {imagePreview && (
                 <div className="flex flex-col items-center gap-3 min-[425px]:flex-row">
-                  <button className="px-4 py-2 text-sm font-medium text-light dark:text-dark bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-lg hover:bg-background-light dark:hover:bg-background-dark transition-colors shadow-sm hover:cursor-pointer">
+                  <button
+                    className="px-4 py-2 text-sm font-medium text-light dark:text-dark bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-lg hover:bg-background-light dark:hover:bg-background-dark transition-colors shadow-sm hover:cursor-pointer"
+                    onClick={uploadImage}
+                  >
                     Upload
                   </button>
                   <button

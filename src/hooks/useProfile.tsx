@@ -1,17 +1,11 @@
-import { useState } from "react";
+import { useCallback } from "react";
 import { supabase } from "@/utils/supabase";
 import { type Profile } from "@/components/types";
 
 export const useProfile = (userId = "") => {
-  const [profile, setProfile] = useState<Profile | null>(null);
-
-  const fetchUser = async () => {
-    if (profile) {
-      return;
-    }
-
+  const fetchUser = useCallback(async () => {
     if (!userId) {
-      throw new Error("User ID is required");
+      return;
     }
 
     const { data: fetchedProfile, error } = await supabase
@@ -24,23 +18,74 @@ export const useProfile = (userId = "") => {
       throw new Error(error.message);
     }
 
-    setProfile(fetchedProfile);
-  };
+    return fetchedProfile;
+  }, [userId]);
 
-  const updateProfile = async (profileUpdated: Profile) => {
+  const update = async (profileUpdated: Profile) => {
     const { error } = await supabase
       .from("Profile")
-      .update({
-        fullname: profileUpdated.fullname,
-      })
+      .update(profileUpdated)
       .eq("id", profileUpdated.id);
 
     if (error) {
       throw new Error(error.message);
     }
-
-    setProfile({ ...profileUpdated });
   };
 
-  return { profile, fetchUser, updateProfile };
+  const deleteProfileImage = async (path_image: string) => {
+    const { error } = await supabase.storage
+      .from("avatars")
+      .remove([path_image]);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  const updateProfileImage = async (image: File, profile: Profile) => {
+    if (!image) {
+      throw new Error("Image is required");
+    }
+
+    console.log("profile inside updateProfile image", profile);
+
+    if (!userId) {
+      throw new Error("User ID is required");
+    }
+
+    const fileExt = image.name.split(".").pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const path = `${userId}/${fileName}`;
+
+    const { data, error } = await supabase.storage
+      .from("avatars")
+      .upload(path, image, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (profile.photo_path) {
+      await deleteProfileImage(profile.photo_path);
+    }
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("avatars").getPublicUrl(data.path);
+
+    const profileUpdate = {
+      ...profile,
+      photo_url: publicUrl,
+      photo_path: data.path,
+    };
+
+    await update(profileUpdate as Profile);
+
+    return profileUpdate;
+  };
+
+  return { fetchUser, update, updateProfileImage };
 };

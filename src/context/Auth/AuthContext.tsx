@@ -12,6 +12,7 @@ export interface AuthContextProps {
   signIn: (dataForm: LoginFormInputs) => Promise<AuthResponse["data"]>;
   signUp: (dataForm: SignupFormData) => Promise<AuthResponse["data"]>;
   signOut: () => Promise<void>;
+  updateProfile: (profileUpdated: Profile) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextProps | null>(null);

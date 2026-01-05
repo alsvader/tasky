@@ -13,6 +13,7 @@ export interface Profile {
   fullname: string;
   photo_url: string;
   created_at?: string;
+  photo_path?: string;
 }
 
 export type TaskFormData = Pick<Task, "title" | "completed">;
