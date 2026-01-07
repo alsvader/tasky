@@ -1,25 +1,28 @@
-import { useCallback } from "react";
 import { supabase } from "@/utils/supabase";
 import { type Profile } from "@/components/types";
 
 export const useProfile = (userId = "") => {
-  const fetchUser = useCallback(async () => {
+  const fetchUser = async () => {
     if (!userId) {
       return;
     }
 
-    const { data: fetchedProfile, error } = await supabase
-      .from("Profile")
-      .select()
-      .eq("id", userId)
-      .single();
+    try {
+      const { data: fetchedProfile, error } = await supabase
+        .from("Profile")
+        .select()
+        .eq("id", userId);
 
-    if (error) {
-      throw new Error(error.message);
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return fetchedProfile[0] || null;
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+      return null;
     }
-
-    return fetchedProfile;
-  }, [userId]);
+  };
 
   const update = async (profileUpdated: Profile) => {
     const { error } = await supabase
@@ -56,6 +59,8 @@ export const useProfile = (userId = "") => {
     const fileExt = image.name.split(".").pop();
     const fileName = `${Math.random()}.${fileExt}`;
     const path = `${userId}/${fileName}`;
+
+    console.log("path", path);
 
     const { data, error } = await supabase.storage
       .from("avatars")
