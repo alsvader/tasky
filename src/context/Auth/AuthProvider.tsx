@@ -7,11 +7,13 @@ import type {
   LoginFormInputs,
   SignupFormData,
   Profile,
+  ChangePasswordFormData,
 } from "@/components/types";
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { fetchUser } = useProfile(session?.user.id);
 
@@ -19,6 +21,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, newSession) => {
+      console.log("newSession", newSession);
+      setIsLoading(false);
+
       if (event === "SIGNED_OUT") {
         setSession(null);
         return;
@@ -79,13 +84,32 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }
   };
 
+  const changePassword = async (dataForm: ChangePasswordFormData) => {
+    const { newPassword } = dataForm;
+
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  };
+
   const updateProfile = async (profileUpdated: Profile) => {
     setProfile(profileUpdated);
   };
 
   return (
     <AuthContext.Provider
-      value={{ session, profile, signIn, signUp, signOut, updateProfile }}
+      value={{
+        session,
+        profile,
+        isLoading,
+        signIn,
+        signUp,
+        signOut,
+        changePassword,
+        updateProfile,
+      }}
     >
       {children}
     </AuthContext.Provider>

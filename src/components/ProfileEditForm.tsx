@@ -209,7 +209,7 @@ export function ProfileEditForm() {
             </span>
             <Link
               className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-              to="/change-password"
+              to="/reset-password"
             >
               Change Password
             </Link>

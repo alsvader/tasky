@@ -14,17 +14,21 @@ export function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<RootLayout />}>
-          {/* Public routes */}
+          {/* Public routes, not available for authenticated users */}
           <Route element={<PublicRoute />}>
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
-            <Route path="reset-password" element={<ResetPassword />} />
           </Route>
+
+          {/* Private routes, available for authenticated and unauthenticated users */}
+          <Route path="reset-password" element={<ResetPassword />} />
+
+          {/* Private route for authenticated users */}
+          <Route path="change-password" element={<ChangePassword />} />
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
             <Route index element={<Dashboard />} />
-            <Route path="change-password" element={<ChangePassword />} />
           </Route>
 
           {/* Fallback route */}

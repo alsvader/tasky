@@ -2,6 +2,8 @@ import { Link } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
+import { supabase } from "@/utils/supabase";
+import { useAuth } from "@/hooks/useAuth";
 import {
   ResetPasswordFormSchema,
   type ResetPasswordFormInputs,
@@ -10,6 +12,8 @@ import { TaskyIcon } from "@/components/Icons/TaskyIcon";
 import { Button } from "@/components/Button";
 
 export function ResetPassword() {
+  const { session: isAuthenticated } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -24,12 +28,20 @@ export function ResetPassword() {
     reset();
   };
 
-  const onSubmit: SubmitHandler<ResetPasswordFormInputs> = (data) => {
-    console.log("Reset Password:", data);
-    toast.success(
-      "If an account with that email exists, a reset link has been sent."
-    );
-    resetForm();
+  const onSubmit: SubmitHandler<ResetPasswordFormInputs> = async (data) => {
+    try {
+      console.log("Reset Password:", data);
+      const { email } = data;
+
+      await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: "http://localhost:5173/change-password",
+      });
+
+      toast.success("A reset link has been sent.");
+      resetForm();
+    } catch (error) {
+      toast.error("An error occurred during password reset.");
+    }
   };
 
   return (
@@ -86,9 +98,9 @@ export function ResetPassword() {
             </Button>
             <Link
               className="text-primary text-sm font-normal leading-normal text-center underline transition hover:text-primary/90"
-              to="/login"
+              to={isAuthenticated ? "/" : "/login"}
             >
-              Remembered it? Back to Login
+              {isAuthenticated ? "Cancel" : "Remembered it? Back to Login"}
             </Link>
           </form>
         </div>

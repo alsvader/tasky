@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/hooks/useTheme";
@@ -8,6 +8,11 @@ export function RootLayout() {
   const { session: isAuthenticated } = useAuth();
   const { theme } = useTheme();
 
+  const location = useLocation();
+  const isResetPassword =
+    location.pathname === "/reset-password" ||
+    location.pathname === "/change-password";
+
   return (
     <main
       className={cn(
@@ -15,7 +20,7 @@ export function RootLayout() {
         theme
       )}
     >
-      {isAuthenticated && <Header />}
+      {isAuthenticated && !isResetPassword && <Header />}
       <Outlet />
     </main>
   );

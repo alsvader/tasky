@@ -62,7 +62,6 @@ export type ResetPasswordFormInputs = z.infer<typeof ResetPasswordFormSchema>;
 
 export const ChangePasswordFormSchema = z
   .object({
-    currentPassword: z.string().min(1, "Current password is required"),
     newPassword: z
       .string()
       .min(6, "New password must be at least 6 characters"),
@@ -76,3 +75,7 @@ export const ChangePasswordFormSchema = z
   });
 
 export type ChangePasswordFormInputs = z.infer<typeof ChangePasswordFormSchema>;
+export type ChangePasswordFormData = Omit<
+  ChangePasswordFormInputs,
+  "confirmNewPassword"
+>;
